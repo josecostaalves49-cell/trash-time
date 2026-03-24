@@ -1,49 +1,50 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Painel</title>
+<title>Cadastro Coletor</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="painel">
+<body>
 
-<h1>🚛 Painel do Coletor</h1>
-<h2 id="nome"></h2>
+<h1>🚛 Cadastro de Coletor</h1>
 
-<button onclick="rota()">🗺️ Ver Rota</button>
-<button onclick="coleta()">✅ Marcar Coleta</button>
-<button onclick="problema()">📸 Reportar Problema</button>
-<button onclick="sair()">🚪 Sair</button>
+<!-- BOTÃO PRA ATIVAR CÂMERA -->
+<button onclick="iniciarCamera()">📷 Ativar Câmera</button>
 
-<script>
+<br><br>
 
-let usuario = JSON.parse(localStorage.getItem("logado"));
+<input type="text" id="nome" placeholder="Nome completo">
+<input type="text" id="cpf" placeholder="CPF">
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="senha" placeholder="Senha">
 
-if (!usuario) {
-  window.location.href = "index.html";
-}
 
-document.getElementById("nome").innerText = "Bem-vindo, " + usuario.nome;
+<hr>
 
-function rota() {
-  alert("Mostrando rota atual...");
-}
+<!-- SELFIE -->
+<h3>🤳 Selfie</h3>
+<video id="videoSelfie" width="250" autoplay playsinline></video>
+<br>
+<button onclick="capturar('selfie')">Capturar Selfie</button>
+<br>
+<img id="imgSelfie" width="250">
 
-function coleta() {
-  alert("Coleta registrada!");
-}
+<br><br>
 
-function problema() {
-  alert("Abrir câmera...");
-}
+<button onclick="cadastrar()">Cadastrar</button>
 
-function sair() {
-  localStorage.removeItem("logado");
-  window.location.href = "index.html";
-}
+<hr>
 
-</script>
+<h2>Login</h2>
+
+<input type="email" id="loginEmail" placeholder="Email">
+<input type="password" id="loginSenha" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+
+<!-- LIGAÇÃO COM O JS -->
+<script src="script.js"></script>
 
 </body>
 </html>
