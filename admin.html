@@ -1,50 +1,107 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Cadastro Coletor</title>
-<link rel="stylesheet" href="style.css">
+<title>Painel do Administrador</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f4f4f4;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+.card {
+  background: white;
+  margin: 15px auto;
+  padding: 15px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.aprovar {
+  background: green;
+  color: white;
+}
+
+.reprovar {
+  background: red;
+  color: white;
+}
+</style>
+
 </head>
 
 <body>
 
-<h1>🚛 Cadastro de Coletor</h1>
+<h1>👨‍💼 Painel do ADM</h1>
 
-<!-- BOTÃO PRA ATIVAR CÂMERA -->
-<button onclick="iniciarCamera()">📷 Ativar Câmera</button>
+<div id="lista"></div>
 
-<br><br>
+<script>
 
-<input type="text" id="nome" placeholder="Nome completo">
-<input type="text" id="cpf" placeholder="CPF">
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="senha" placeholder="Senha">
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+let lista = document.getElementById("lista");
+
+function carregarUsuarios() {
+  lista.innerHTML = "";
+
+  usuarios.forEach((u, index) => {
+
+    let status = u.aprovado ? "✅ Aprovado" : "⏳ Pendente";
+
+    lista.innerHTML += `
+      <div class="card">
+        <h3>${u.nome}</h3>
+        <p><b>CPF:</b> ${u.cpf}</p>
+        <p>${status}</p>
 
 
-<hr>
+        <p><b>Selfie:</b></p>
+        <img src="${u.selfie}">
 
-<!-- SELFIE -->
-<h3>🤳 Selfie</h3>
-<video id="videoSelfie" width="250" autoplay playsinline></video>
-<br>
-<button onclick="capturar('selfie')">Capturar Selfie</button>
-<br>
-<img id="imgSelfie" width="250">
+        <button class="aprovar" onclick="aprovar(${index})">Aprovar</button>
+        <button class="reprovar" onclick="reprovar(${index})">Reprovar</button>
+      </div>
+    `;
+  });
+}
 
-<br><br>
+function aprovar(i) {
+  usuarios[i].aprovado = true;
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  carregarUsuarios();
+}
 
-<button onclick="cadastrar()">Cadastrar</button>
+function reprovar(i) {
+  usuarios.splice(i, 1);
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  carregarUsuarios();
+}
 
-<hr>
+// carregar ao abrir
+carregarUsuarios();
 
-<h2>Login</h2>
-
-<input type="email" id="loginEmail" placeholder="Email">
-<input type="password" id="loginSenha" placeholder="Senha">
-<button onclick="login()">Entrar</button>
-
-<!-- LIGAÇÃO COM O JS -->
-<script src="script.js"></script>
+</script>
 
 </body>
 </html>
