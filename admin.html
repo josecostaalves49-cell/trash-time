@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Painel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="painel">
+
+<h1>🚛 Painel do Coletor</h1>
+<h2 id="nome"></h2>
+
+<button onclick="rota()">🗺️ Ver Rota</button>
+<button onclick="coleta()">✅ Marcar Coleta</button>
+<button onclick="problema()">📸 Reportar Problema</button>
+<button onclick="sair()">🚪 Sair</button>
+
+<script>
+
+let usuario = JSON.parse(localStorage.getItem("logado"));
+
+if (!usuario) {
+  window.location.href = "index.html";
+}
+
+document.getElementById("nome").innerText = "Bem-vindo, " + usuario.nome;
+
+function rota() {
+  alert("Mostrando rota atual...");
+}
+
+function coleta() {
+  alert("Coleta registrada!");
+}
+
+function problema() {
+  alert("Abrir câmera...");
+}
+
+function sair() {
+  localStorage.removeItem("logado");
+  window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>
