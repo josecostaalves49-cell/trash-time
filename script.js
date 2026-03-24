@@ -1,29 +1,22 @@
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-// 🎥 INICIAR CÂMERA (COM CLIQUE)
+// 📷 CÂMERA
 async function iniciarCamera() {
   try {
-    const streamDoc = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" }
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true
     });
 
-    const streamSelfie = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "user" }
-    });
-
-    document.getElementById("videoDoc").srcObject = streamDoc;
-    document.getElementById("videoSelfie").srcObject = streamSelfie;
+    document.getElementById("videoSelfie").srcObject = stream;
 
   } catch (erro) {
-    alert("Erro ao acessar câmera: " + erro);
+    alert("Erro ao acessar câmera: " + erro.name);
   }
 }
 
-// 📸 CAPTURAR FOTO
-function capturar(tipo) {
-  const video = tipo === "doc"
-    ? document.getElementById("videoDoc")
-    : document.getElementById("videoSelfie");
+// 📸 CAPTURAR SELFIE
+function capturar() {
+  const video = document.getElementById("videoSelfie");
 
   const canvas = document.createElement("canvas");
   canvas.width = video.videoWidth;
@@ -34,11 +27,7 @@ function capturar(tipo) {
 
   const imagem = canvas.toDataURL("image/png");
 
-  if (tipo === "doc") {
-    document.getElementById("imgDoc").src = imagem;
-  } else {
-    document.getElementById("imgSelfie").src = imagem;
-  }
+  document.getElementById("imgSelfie").src = imagem;
 }
 
 // 📋 CADASTRO
@@ -47,12 +36,10 @@ function cadastrar() {
   let cpf = document.getElementById("cpf").value;
   let email = document.getElementById("email").value;
   let senha = document.getElementById("senha").value;
-
-  let doc = document.getElementById("imgDoc").src;
   let selfie = document.getElementById("imgSelfie").src;
 
-  if (!nome || !cpf || !email || !senha || !doc || !selfie) {
-    alert("Preencha tudo e tire as fotos!");
+  if (!nome || !cpf || !email || !senha || !selfie) {
+    alert("Preencha tudo e tire a selfie!");
     return;
   }
 
@@ -61,15 +48,14 @@ function cadastrar() {
     cpf,
     email,
     senha,
-    documento: doc,
-    selfie: selfie,
+    selfie,
     aprovado: false
   };
 
   usuarios.push(usuario);
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-  alert("Cadastro enviado para análise!");
+  alert("Cadastro enviado!");
 }
 
 // 🔐 LOGIN
@@ -85,10 +71,11 @@ function login() {
   }
 
   if (!usuario.aprovado) {
-    alert("Cadastro ainda não aprovado!");
+    alert("Aguardando aprovação!");
     return;
   }
 
   localStorage.setItem("logado", JSON.stringify(usuario));
   window.location.href = "painel.html";
+}
 }
